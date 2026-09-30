@@ -2,6 +2,7 @@ import ResCard from "./ResCard";
 import Shimmer from "./Shimmer";
 import { useFetchRecipes } from "../../utils/app-data";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 const ResBody = () => {
   const { recipes, loading } = useFetchRecipes();
@@ -65,13 +66,14 @@ const ResBody = () => {
       </div>
       <div className="flex flex-wrap gap-3">
         {displayedRecipes.map((recipe) => (
-          <ResCard
-            key={recipe.id}
-            resName={recipe.name}
-            rating={recipe.rating}
-            location={recipe.cuisine}
-            imgUrl={recipe.image}
-          />
+          <Link key={recipe.id} to={`/restaurants/${recipe.id}`}>
+            <ResCard
+              resName={recipe.name}
+              rating={recipe.rating}
+              location={recipe.cuisine}
+              imgUrl={recipe.image}
+            />
+          </Link>
         ))}
       </div>
     </div>

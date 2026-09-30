@@ -25,4 +25,22 @@ const Shimmer = () => {
   );
 };
 
+export const MenuShimmer = () => {
+  return (
+    <div className="p-4 max-w-2xl animate-pulse">
+      <div className="h-4 w-16 bg-gray-300 rounded"></div>
+      <div className="w-full h-72 bg-gray-300 rounded-lg my-4"></div>
+      <div className="h-7 w-2/3 bg-gray-300 rounded mb-3"></div>
+      <div className="h-4 w-1/3 bg-gray-300 rounded mb-2"></div>
+      <div className="h-4 w-1/4 bg-gray-300 rounded mb-2"></div>
+      <div className="h-4 w-1/2 bg-gray-300 rounded mb-6"></div>
+
+      <div className="h-6 w-40 bg-gray-300 rounded mb-3"></div>
+      {Array.from({ length: 6 }).map((_, index) => (
+        <div key={index} className="h-4 w-1/2 bg-gray-300 rounded mb-2"></div>
+      ))}
+    </div>
+  );
+};
+
 export default Shimmer;

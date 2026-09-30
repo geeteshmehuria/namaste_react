@@ -20,3 +20,25 @@ export const useFetchRecipes = () => {
 
   return { recipes, loading };
 };
+
+export const useRestaurantMenu = (resId) => {
+  const [menu, setMenu] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    setLoading(true);
+    axios
+      .get(`https://dummyjson.com/recipes/${resId}`)
+      .then((res) => {
+        setMenu(res.data);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error("Failed to fetch restaurant menu:", error);
+        setMenu(null);
+        setLoading(false);
+      });
+  }, [resId]);
+
+  return { menu, loading };
+};

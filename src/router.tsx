@@ -6,6 +6,7 @@ import Offers from './components/swiggy-components/Offers'
 import Help from './components/swiggy-components/Help'
 import Cart from './components/swiggy-components/Cart'
 import ResBody from './components/swiggy-components/ResBody'
+import RestaurantMenu from './components/swiggy-components/RestaurantMenu'
 
 export const appRouter = createBrowserRouter([
   {
@@ -35,6 +36,10 @@ export const appRouter = createBrowserRouter([
       {
         path: '/cart',
         element: <Cart />,
+      },
+      {
+        path: '/restaurants/:resId',
+        element: <RestaurantMenu />,
       },
     ]
   },
