@@ -3,16 +3,18 @@ import Shimmer from "./Shimmer";
 import { useFetchRecipes } from "../../utils/app-data";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { useOnlineStatus } from "../../utils/app-data";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Toggle } from "@/components/ui/toggle";
+import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 
 const ResBody = () => {
   const { recipes, loading } = useFetchRecipes();
   const [showTopRatedOnly, setShowTopRatedOnly] = useState(false);
   const [searchText, setSearchText] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
-
-  if (loading) {
-    return <Shimmer />;
-  }
+  const onlineStatus = useOnlineStatus();
 
   const handleClear = () => {
     setSearchText("");
@@ -22,17 +24,30 @@ const ResBody = () => {
   const displayedRecipes = recipes.filter(
     (recipe) =>
       recipe.name.toLowerCase().includes(searchQuery.toLowerCase()) &&
-      (!showTopRatedOnly || recipe.rating >= 4.5)
+      (!showTopRatedOnly || recipe.rating >= 4.5),
   );
+
+  if (!onlineStatus) {
+    return (
+      <Alert variant="destructive" className="m-4 w-auto">
+        <AlertTitle>You are offline</AlertTitle>
+        <AlertDescription>Check your internet connection.</AlertDescription>
+      </Alert>
+    );
+  }
+
+  if (loading) {
+    return <Shimmer />;
+  }
 
   return (
     <div className="gap-4 p-4">
-      <div className="flex gap-4">
-        <div>
-          <input
+      <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2 m-2">
+          <Input
             type="text"
             placeholder="Search"
-            className="border border-solid border-gray-300 p-2 m-2 rounded-lg"
+            className="w-56"
             value={searchText}
             onChange={(e) => {
               setSearchText(e.target.value);
@@ -41,28 +56,23 @@ const ResBody = () => {
               }
             }}
           />
-          <button
-            className="border border-solid border-gray-300 p-2 m-2 rounded-lg cursor-pointer"
-            onClick={() => setSearchQuery(searchText)}
-          >
+          <Button variant="outline" onClick={() => setSearchQuery(searchText)}>
             Search
-          </button>
+          </Button>
           {(searchText || searchQuery) && (
-            <button
-              className="border border-solid border-gray-300 p-2 m-2 rounded-lg cursor-pointer"
-              onClick={handleClear}
-            >
+            <Button variant="ghost" onClick={handleClear}>
               Clear
-            </button>
+            </Button>
           )}
         </div>
 
-        <button
-          className="border border-solid border-gray-300 p-2 m-2 rounded-lg cursor-pointer"
-          onClick={() => setShowTopRatedOnly((prev) => !prev)}
+        <Toggle
+          variant="outline"
+          pressed={showTopRatedOnly}
+          onPressedChange={setShowTopRatedOnly}
         >
-          {showTopRatedOnly ? "Show All" : "Filter Top Rated Restaurants"}
-        </button>
+          Top Rated Restaurants
+        </Toggle>
       </div>
       <div className="flex flex-wrap gap-3">
         {displayedRecipes.map((recipe) => (
