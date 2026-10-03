@@ -23,4 +23,16 @@ const ResCard = (props) => {
     </Card>
   );
 };
+
+export const withPromotedLebel = (ResCard) => {
+  return (props) => {
+    return (
+      <div className="relative">
+        <Badge className="absolute top-0 left-0">Promoted</Badge>
+        <ResCard {...props} />
+      </div>
+    );
+  };
+};
+
 export default ResCard;

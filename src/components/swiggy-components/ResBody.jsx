@@ -1,4 +1,4 @@
-import ResCard from "./ResCard";
+import ResCard, { withPromotedLebel } from "./ResCard";
 import Shimmer from "./Shimmer";
 import { useFetchRecipes } from "../../utils/app-data";
 import { useState } from "react";
@@ -16,6 +16,7 @@ const ResBody = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const onlineStatus = useOnlineStatus();
 
+  const ResCardWithPromo = withPromotedLebel(ResCard);
   const handleClear = () => {
     setSearchText("");
     setSearchQuery("");
@@ -77,12 +78,21 @@ const ResBody = () => {
       <div className="flex flex-wrap gap-3">
         {displayedRecipes.map((recipe) => (
           <Link key={recipe.id} to={`/restaurants/${recipe.id}`}>
-            <ResCard
-              resName={recipe.name}
-              rating={recipe.rating}
-              location={recipe.cuisine}
-              imgUrl={recipe.image}
-            />
+            {recipe.rating >= 4.8 ? (
+              <ResCardWithPromo
+                resName={recipe.name}
+                rating={recipe.rating}
+                location={recipe.cuisine}
+                imgUrl={recipe.image}
+              />
+            ) : (
+              <ResCard
+                resName={recipe.name}
+                rating={recipe.rating}
+                location={recipe.cuisine}
+                imgUrl={recipe.image}
+              />
+            )}
           </Link>
         ))}
       </div>
